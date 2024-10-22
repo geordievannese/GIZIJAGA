@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'konsultasi.dart'; 
 
 void main() {
   runApp(const GiziJagaApp());
@@ -24,6 +25,7 @@ class MainScreen extends StatefulWidget {
   const MainScreen({super.key});
 
   @override
+  // ignore: library_private_types_in_public_api
   _MainScreenState createState() => _MainScreenState();
 }
 
@@ -31,9 +33,9 @@ class _MainScreenState extends State<MainScreen> {
   int _selectedIndex = 0;
 
   static const List<Widget> _widgetOptions = <Widget>[
-    HomePage(),
-    Center(child: Text('Konsultasi Dokter')),
-    Center(child: Text('Pusat Bantuan')),
+    HomePage(), // Main home page
+    KonsultasiDokterPage(), // Doctor consultation page
+    Center(child: Text('Pusat Bantuan')), // Help page placeholder
   ];
 
   void _onItemTapped(int index) {
@@ -46,14 +48,29 @@ class _MainScreenState extends State<MainScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Gizi Jaga'),
+        title: const Text(
+          'Gizi Jaga',
+          style: TextStyle(
+            color: Colors.white, 
+            fontSize: 24, 
+            fontWeight: FontWeight.bold, 
+            letterSpacing: 1.2, 
+            shadows: [
+              Shadow(
+                offset: Offset(3.0, 3.0),
+                blurRadius: 5.0,
+                color: Color.fromARGB(255, 0, 0, 0),
+              ),
+            ],
+          ),
+        ),
         backgroundColor: Colors.black,
         elevation: 0,
         actions: [
           IconButton(
             icon: const Icon(Icons.notifications, color: Colors.white),
             onPressed: () {},
-          )
+          ),
         ],
       ),
       body: Container(
@@ -84,6 +101,7 @@ class _MainScreenState extends State<MainScreen> {
     );
   }
 }
+
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -230,7 +248,7 @@ class HomePageState extends State<HomePage> {
       } else {
         _selectedFoodInfo = null;
         ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('Makanan tidak ditemukan dalam database.')),
+          const SnackBar(content: Text('Makanan tidak ditemukan.')),
         );
       }
     });
@@ -458,7 +476,7 @@ class HomePageState extends State<HomePage> {
                 ),
               const SizedBox(height: 30),
               const Text(
-                'Anggaran Nutrisi Harian',
+                'Batas Asupan Nutrisi Harian',
                 style: TextStyle(
                   fontSize: 20,
                   fontWeight: FontWeight.bold,
