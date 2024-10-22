@@ -45,7 +45,7 @@ class KonsultasiDokterPageState extends State<KonsultasiDokterPage> {
     return List.generate(names.length, (index) {
       return {
         'name': names[index], 
-        'age': (10 + random.nextInt(20)).toString(),
+        'age': (20 + random.nextInt(20)).toString(),
         'specialty': 'Nutritionist',
         'rate': (50 + random.nextInt(150)).toString(),
         'practiceHours': '${10} AM - ${5 + random.nextInt(4)} PM'
