@@ -243,3 +243,4 @@ void _filterDoctors(String query) {
     );
   }
 }
+
