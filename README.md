@@ -6,4 +6,4 @@ LOMBA HOLOGY
 
 This project is a starting point for a Flutter application.
 
-# SEMOGA MENANG COY
+# SEMOGA MENANG COY AMIIN
