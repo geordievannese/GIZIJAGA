@@ -237,6 +237,34 @@ class HomePageState extends State<HomePage> {
   List<String> _suggestions = [];
   Map<String, dynamic>? _selectedFoodInfo;
 
+  Widget buildSelectedFoodCard(Map<String, dynamic> food, int index) {
+    return Card(
+      elevation: 5,
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(12),
+      ),
+      child: Padding(
+        padding: const EdgeInsets.all(16.0),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text(
+              '${food['name'].toString().capitalize()}',
+              style: const TextStyle(
+                fontSize: 16,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+            const SizedBox(height: 5),
+            Text('Kalori: ${food['nutrients']['calories']} kcal'),
+            Text('Protein: ${food['nutrients']['protein']} g'),
+            Text('Lemak: ${food['nutrients']['fat']} g'),
+          ],
+        ),
+      ),
+    );
+  }
+
   void _checkNutrients() {
     final foodName = _foodController.text.toLowerCase();
     setState(() {
@@ -278,39 +306,87 @@ class HomePageState extends State<HomePage> {
   }
 
   Widget buildNutrientCircle(
-      String nutrientName, num budget, num initialBudget, String unit) {
-    double percentage = (budget / initialBudget).clamp(0.0, 1.0);
-    return Column(
-      mainAxisSize: MainAxisSize.min,
-      children: [
-        Stack(
-          alignment: Alignment.center,
-          children: [
-            SizedBox(
-              width: 100,
-              height: 100,
-              child: CircularProgressIndicator(
-                value: percentage,
-                strokeWidth: 10,
-                backgroundColor: Colors.grey[200],
-                valueColor:
-                    AlwaysStoppedAnimation<Color>(Colors.blue[700]!),
+    String nutrientName, num budget, num initialBudget, String unit) {
+  double percentage = (budget / initialBudget).clamp(0.0, 1.0);
+  return Column(
+    mainAxisSize: MainAxisSize.min,
+    children: [
+      Stack(
+        alignment: Alignment.center,
+        children: [
+          // Shadow for the 3D effect
+          Container(
+            width: 110,
+            height: 110,
+            decoration: BoxDecoration(
+              shape: BoxShape.circle,
+              boxShadow: [
+                BoxShadow(
+                  color: Colors.black.withOpacity(0.2),
+                  offset: const Offset(0, 5),
+                  blurRadius: 10,
+                ),
+              ],
+            ),
+          ),
+          // 3D Effect using gradient for CircularProgressIndicator
+          SizedBox(
+            width: 100,
+            height: 100,
+            child: CircularProgressIndicator(
+              value: percentage,
+              strokeWidth: 12,
+              backgroundColor: Colors.grey[300],
+              valueColor: const AlwaysStoppedAnimation<Color>(
+                Color.fromARGB(255, 31, 178, 224), // Modern blue
               ),
             ),
-            Text(
-              '${nutrientName.capitalize()}:\n${budget.toStringAsFixed(1)} $unit',
-              style: const TextStyle(
-                fontSize: 14,
-                fontWeight: FontWeight.bold,
-                color: Colors.black,
+          ),
+          // Overlay gradient for 3D glossy effect
+          Positioned.fill(
+            child: Container(
+              decoration: BoxDecoration(
+                shape: BoxShape.circle,
+                gradient: RadialGradient(
+                  colors: [
+                    Colors.white.withOpacity(0.1),
+                    Colors.transparent,
+                  ],
+                  radius: 0.85,
+                  center: const Alignment(-0.5, -0.5),
+                ),
               ),
-              textAlign: TextAlign.center,
             ),
-          ],
-        ),
-      ],
-    );
-  }
+          ),
+          // Display nutrient name and value in the center
+          Text(
+  '${nutrientName.capitalize()}:\n${budget.toStringAsFixed(1)} $unit',
+  style: TextStyle( // Remove const here
+    fontSize: 14,
+    fontWeight: FontWeight.bold,
+    color: Colors.black,
+    shadows: [
+      const Shadow(
+        offset: Offset(2.0, 2.0),
+        blurRadius: 3.0,
+        color: Colors.grey,
+      ),
+      Shadow(
+        offset: const Offset(-2.0, -2.0),
+        blurRadius: 3.0,
+        color: Colors.white.withOpacity(0.6), 
+      ),
+    ],
+  ),
+  textAlign: TextAlign.center,
+)
+
+        ],
+      ),
+    ],
+  );
+}
+
 
   @override
   Widget build(BuildContext context) {
