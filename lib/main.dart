@@ -492,64 +492,77 @@ class HomePageState extends State<HomePage> {
               ),
               const SizedBox(height: 30),
               // Display selected foods
-              if (_selectedFoods.isNotEmpty)
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    const Text(
-                      'Makanan Terpilih:',
-                      style: TextStyle(
-                        fontSize: 20,
-                        fontWeight: FontWeight.bold,
-                      ),
+if (_selectedFoods.isNotEmpty)
+  Card(
+    color: Colors.white, // Set the background color of the card to white
+    elevation: 5,
+    shape: RoundedRectangleBorder(
+      borderRadius: BorderRadius.circular(12),
+    ),
+    child: Padding(
+      padding: const EdgeInsets.all(16.0),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          const Text(
+            'Makanan Terpilih:',
+            style: TextStyle(
+              fontSize: 20,
+              fontWeight: FontWeight.bold,
+            ),
+          ),
+          const SizedBox(height: 10),
+          for (var food in _selectedFoods)
+            Padding(
+              padding: const EdgeInsets.symmetric(vertical: 4.0),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    '${food['name'].toString().capitalize()}',
+                    style: const TextStyle(
+                      fontSize: 16, 
+                      fontWeight: FontWeight.bold,
                     ),
-                    const SizedBox(height: 10),
-                    for (var food in _selectedFoods)
-                      Padding(
-                        padding: const EdgeInsets.symmetric(vertical: 4.0),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text(
-                              '${food['name'].toString().capitalize()}',
-                              style: const TextStyle(
-                                  fontSize: 16, fontWeight: FontWeight.bold),
-                            ),
-                            Text(
-                              'Kalori: ${food['nutrients']['calories']} kcal',
-                              style: const TextStyle(fontSize: 16),
-                            ),
-                            Text(
-                              'Protein: ${food['nutrients']['protein']} g',
-                              style: const TextStyle(fontSize: 16),
-                            ),
-                            Text(
-                              'Lemak: ${food['nutrients']['fat']} g',
-                              style: const TextStyle(fontSize: 16),
-                            ),
-                          ],
-                        ),
-                      ),
-                    const SizedBox(height: 20),
-                    Center(
-                      child: ElevatedButton(
-                        onPressed: _updateCalorieBudget,
-                        style: ElevatedButton.styleFrom(
-                          backgroundColor: Colors.blue[700],
-                          foregroundColor: Colors.white,
-                          padding: const EdgeInsets.symmetric(
-                            horizontal: 24,
-                            vertical: 12,
-                          ),
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(12),
-                          ),
-                        ),
-                        child: const Text('Perbarui Anggaran Nutrisi'),
-                      ),
-                    ),
-                  ],
+                  ),
+                  Text(
+                    'Kalori: ${food['nutrients']['calories']} kcal',
+                    style: const TextStyle(fontSize: 16),
+                  ),
+                  Text(
+                    'Protein: ${food['nutrients']['protein']} g',
+                    style: const TextStyle(fontSize: 16),
+                  ),
+                  Text(
+                    'Lemak: ${food['nutrients']['fat']} g',
+                    style: const TextStyle(fontSize: 16),
+                  ),
+                ],
+              ),
+            ),
+          const SizedBox(height: 20),
+          Center(
+            child: ElevatedButton(
+              onPressed: _updateCalorieBudget,
+              style: ElevatedButton.styleFrom(
+                backgroundColor: Colors.blue[700],
+                foregroundColor: Colors.white,
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 24,
+                  vertical: 12,
                 ),
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(12),
+                ),
+              ),
+              child: const Text('Perbarui Anggaran Nutrisi'),
+            ),
+          ),
+        ],
+      ),
+    ),
+  ),
+
               const SizedBox(height: 30),
               const Text(
                 'Batas Asupan Nutrisi Harian',
