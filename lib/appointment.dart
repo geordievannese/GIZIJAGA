@@ -59,10 +59,10 @@ class _AppointmentPageState extends State<AppointmentPage> with SingleTickerProv
       });
       _animationController.forward().then((_) {
         ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-            content: const Text("Your booking has been saved!"),
+          const SnackBar(
+            content: Text("Your booking has been saved!"),
             behavior: SnackBarBehavior.floating,
-            duration: const Duration(seconds: 2),
+            duration: Duration(seconds: 2),
           ),
         );
       });

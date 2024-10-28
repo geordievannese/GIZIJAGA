@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_application_1/bantuan.dart';
-import 'konsultasi.dart'; 
+import 'konsultasi.dart';
+import 'login.dart';
 
 void main() {
   runApp(const GiziJagaApp());
@@ -17,10 +18,13 @@ class GiziJagaApp extends StatelessWidget {
         primarySwatch: Colors.green,
         fontFamily: 'Roboto',
       ),
-      home: const MainScreen(),
+      home: const LoginPage(), 
     );
   }
 }
+
+
+Map<String, String> userDatabase = {}; 
 
 class MainScreen extends StatefulWidget {
   const MainScreen({super.key});
