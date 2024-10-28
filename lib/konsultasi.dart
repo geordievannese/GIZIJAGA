@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'dart:async';
 import 'dart:math';
+import 'appointment.dart'; // Import the new file for appointment booking
 
 class KonsultasiDokterPage extends StatefulWidget {
   const KonsultasiDokterPage({super.key});
@@ -69,29 +70,28 @@ class KonsultasiDokterPageState extends State<KonsultasiDokterPage> {
     });
   }
 
-void _filterDoctors(String query) {
-  setState(() {
-    userTyping = query.isNotEmpty;
-    if (query.isEmpty) {
-      // Reset to all doctors when the input is cleared
-      filteredDoctors = doctors;
-      
-      // Restart typing animation if no input
-      if (typingTimer == null || !typingTimer!.isActive) {
-        _startTypingAnimation();
-      }
-    } else {
-      // Filter based on query and stop typing animation
-      filteredDoctors = doctors
-          .where((doctor) => doctor['name']!.toLowerCase().contains(query.toLowerCase()))
-          .toList();
-      
-      // Stop the typing animation
-      typingTimer?.cancel();
-    }
-  });
-}
+  void _filterDoctors(String query) {
+    setState(() {
+      userTyping = query.isNotEmpty;
+      if (query.isEmpty) {
+        // Reset to all doctors when the input is cleared
+        filteredDoctors = doctors;
 
+        // Restart typing animation if no input
+        if (typingTimer == null || !typingTimer!.isActive) {
+          _startTypingAnimation();
+        }
+      } else {
+        // Filter based on query and stop typing animation
+        filteredDoctors = doctors
+            .where((doctor) => doctor['name']!.toLowerCase().contains(query.toLowerCase()))
+            .toList();
+
+        // Stop the typing animation
+        typingTimer?.cancel();
+      }
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -157,80 +157,111 @@ void _filterDoctors(String query) {
                     ),
                     borderRadius: BorderRadius.circular(20),
                   ),
-                  child: Row(
-                    crossAxisAlignment: CrossAxisAlignment.center,
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      const CircleAvatar(
-                        backgroundColor: Colors.teal,
-                        radius: 30,
-                        child: Icon(
-                          Icons.person,
-                          color: Colors.black,
-                          size: 35,
-                        ),
-                      ),
-                      const SizedBox(width: 15),
-                      Expanded(
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text(
-                              'dr. ${doctor['name']}',
-                              style: const TextStyle(
-                                fontWeight: FontWeight.bold,
-                                fontSize: 20, // Increased font size
-                                color: Colors.black,
-                              ),
-                            ),
-                            const SizedBox(height: 5),
-                            Text(
-                              'Age: ${doctor['age']}',
-                              style: const TextStyle(
-                                fontWeight: FontWeight.bold,
-                                fontSize: 16, // Increased font size
-                                color: Colors.black,
-                              ),
-                            ),
-                            Text(
-                              'Specialty: ${doctor['specialty']}',
-                              style: const TextStyle(
-                                fontWeight: FontWeight.bold,
-                                fontSize: 16, // Increased font size
-                                color: Colors.black,
-                              ),
-                            ),
-                            Text(
-                              'Rate: \$${doctor['rate']}/hour',
-                              style: const TextStyle(
-                                fontWeight: FontWeight.bold,
-                                fontSize: 16, // Increased font size
-                                color: Colors.black,
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
-                      Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        crossAxisAlignment: CrossAxisAlignment.end,
+                      Row(
+                        crossAxisAlignment: CrossAxisAlignment.center,
                         children: [
-                          const Text(
-                            'Hours:',
-                            style: TextStyle(
-                              fontWeight: FontWeight.bold,
-                              fontSize: 16, // Increased font size
+                          const CircleAvatar(
+                            backgroundColor: Colors.teal,
+                            radius: 30,
+                            child: Icon(
+                              Icons.person,
                               color: Colors.black,
+                              size: 35,
                             ),
                           ),
-                          Text(
-                            doctor['practiceHours']!,
-                            style: const TextStyle(
-                              fontSize: 16, // Increased font size
-                              fontWeight: FontWeight.bold,
-                              color: Colors.black,
+                          const SizedBox(width: 15),
+                          Expanded(
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(
+                                  'dr. ${doctor['name']}',
+                                  style: const TextStyle(
+                                    fontWeight: FontWeight.bold,
+                                    fontSize: 20, // Increased font size
+                                    color: Colors.black,
+                                  ),
+                                ),
+                                const SizedBox(height: 5),
+                                Text(
+                                  'Age: ${doctor['age']}',
+                                  style: const TextStyle(
+                                    fontWeight: FontWeight.bold,
+                                    fontSize: 16, // Increased font size
+                                    color: Colors.black,
+                                  ),
+                                ),
+                                Text(
+                                  'Specialty: ${doctor['specialty']}',
+                                  style: const TextStyle(
+                                    fontWeight: FontWeight.bold,
+                                    fontSize: 16, // Increased font size
+                                    color: Colors.black,
+                                  ),
+                                ),
+                                Text(
+                                  'Rate: \$${doctor['rate']}/hour',
+                                  style: const TextStyle(
+                                    fontWeight: FontWeight.bold,
+                                    fontSize: 16, // Increased font size
+                                    color: Colors.black,
+                                  ),
+                                ),
+                              ],
                             ),
+                          ),
+                          Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            crossAxisAlignment: CrossAxisAlignment.end,
+                            children: [
+                              const Text(
+                                'Hours:',
+                                style: TextStyle(
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: 16, // Increased font size
+                                  color: Colors.black,
+                                ),
+                              ),
+                              Text(
+                                doctor['practiceHours']!,
+                                style: const TextStyle(
+                                  fontSize: 16, // Increased font size
+                                  fontWeight: FontWeight.bold,
+                                  color: Colors.black,
+                                ),
+                              ),
+                            ],
                           ),
                         ],
+                      ),
+                      const SizedBox(height: 10),
+                      Align(
+                        alignment: Alignment.centerRight,
+                        child: TextButton(
+                          onPressed: () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => AppointmentPage(doctorName: doctor['name']!),
+                              ),
+                            );
+                          },
+                          style: TextButton.styleFrom(
+                            backgroundColor: Colors.teal,
+                            foregroundColor: Colors.white,
+                            padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(10),
+                            ),
+                          ),
+                          child: const Text(
+                            'Book an appointment',
+                            style: TextStyle(fontSize: 16),
+                          ),
+                        ),
                       ),
                     ],
                   ),
@@ -243,4 +274,3 @@ void _filterDoctors(String query) {
     );
   }
 }
-
