@@ -1,7 +1,9 @@
+// main.dart
 import 'package:flutter/material.dart';
 import 'package:flutter_application_1/bantuan.dart';
 import 'konsultasi.dart';
 import 'login.dart';
+import 'artikel.dart'; // Impor artikel.dart
 
 void main() {
   runApp(const GiziJagaApp());
@@ -18,13 +20,12 @@ class GiziJagaApp extends StatelessWidget {
         primarySwatch: Colors.green,
         fontFamily: 'Roboto',
       ),
-      home: const LoginPage(), 
+      home: const LoginPage(),
     );
   }
 }
 
-
-Map<String, String> userDatabase = {}; 
+Map<String, String> userDatabase = {};
 
 class MainScreen extends StatefulWidget {
   const MainScreen({super.key});
@@ -38,9 +39,10 @@ class _MainScreenState extends State<MainScreen> {
   int _selectedIndex = 0;
 
   static const List<Widget> _widgetOptions = <Widget>[
-    HomePage(), 
-    KonsultasiDokterPage(), 
-    BantuanPage(), 
+    HomePage(),
+    KonsultasiDokterPage(),
+    BantuanPage(),
+    ArtikelPage(), // Tambahkan ArtikelPage di sini
   ];
 
   void _onItemTapped(int index) {
@@ -56,10 +58,10 @@ class _MainScreenState extends State<MainScreen> {
         title: const Text(
           'Gizi Jaga',
           style: TextStyle(
-            color: Colors.white, 
-            fontSize: 24, 
-            fontWeight: FontWeight.bold, 
-            letterSpacing: 1.2, 
+            color: Colors.white,
+            fontSize: 24,
+            fontWeight: FontWeight.bold,
+            letterSpacing: 1.2,
             shadows: [
               Shadow(
                 offset: Offset(3.0, 3.0),
@@ -82,31 +84,35 @@ class _MainScreenState extends State<MainScreen> {
         color: const Color.fromARGB(255, 21, 168, 107),
         child: _widgetOptions.elementAt(_selectedIndex),
       ),
-      bottomNavigationBar: BottomNavigationBar(
-        items: const <BottomNavigationBarItem>[
-          BottomNavigationBarItem(
-            icon: Icon(Icons.home, color: Colors.white),
-            label: 'Beranda',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.local_hospital, color: Colors.white),
-            label: 'Konsultasi',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.help_outline, color: Colors.white),
-            label: 'Bantuan',
-          ),
-        ],
-        currentIndex: _selectedIndex,
-        backgroundColor: Colors.black,
-        selectedItemColor: Colors.blue[700],
-        unselectedItemColor: Colors.white,
-        onTap: _onItemTapped,
-      ),
+bottomNavigationBar: BottomNavigationBar(
+  items: const <BottomNavigationBarItem>[
+    BottomNavigationBarItem(
+      icon: Icon(Icons.home), // Warna default (hitam)
+      label: 'Beranda',
+    ),
+    BottomNavigationBarItem(
+      icon: Icon(Icons.local_hospital), // Warna default (hitam)
+      label: 'Konsultasi',
+    ),
+    BottomNavigationBarItem(
+      icon: Icon(Icons.help_outline), // Warna default (hitam)
+      label: 'Bantuan',
+    ),
+    BottomNavigationBarItem(
+      icon: Icon(Icons.article), // Warna default (hitam)
+      label: 'Artikel',
+    ),
+  ],
+  currentIndex: _selectedIndex,
+  backgroundColor: Colors.black,
+  selectedItemColor: Colors.blue[700],
+  unselectedItemColor: Colors.grey, // Warna abu-abu untuk item yang tidak dipilih
+  onTap: _onItemTapped,
+),
+
     );
   }
 }
-
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -306,92 +312,86 @@ class HomePageState extends State<HomePage> {
         _proteinBudget -= nutrients['protein'];
         _fatBudget -= nutrients['fat'];
       }
-      _selectedFoods.clear(); 
+      _selectedFoods.clear();
     });
   }
 
   Widget buildNutrientCircle(
-    String nutrientName, num budget, num initialBudget, String unit) {
-  double percentage = (budget / initialBudget).clamp(0.0, 1.0);
-  return Column(
-    mainAxisSize: MainAxisSize.min,
-    children: [
-      Stack(
-        alignment: Alignment.center,
-        children: [
-          
-          Container(
-            width: 110,
-            height: 110,
-            decoration: BoxDecoration(
-              shape: BoxShape.circle,
-              boxShadow: [
-                BoxShadow(
-                  color: Colors.black.withOpacity(0.2),
-                  offset: const Offset(0, 5),
-                  blurRadius: 10,
-                ),
-              ],
-            ),
-          ),
-          
-          SizedBox(
-            width: 100,
-            height: 100,
-            child: CircularProgressIndicator(
-              value: percentage,
-              strokeWidth: 12,
-              backgroundColor: Colors.grey[300],
-              valueColor: const AlwaysStoppedAnimation<Color>(
-                Color.fromARGB(255, 31, 178, 224), 
-              ),
-            ),
-          ),
-          
-          Positioned.fill(
-            child: Container(
+      String nutrientName, num budget, num initialBudget, String unit) {
+    double percentage = (budget / initialBudget).clamp(0.0, 1.0);
+    return Column(
+      mainAxisSize: MainAxisSize.min,
+      children: [
+        Stack(
+          alignment: Alignment.center,
+          children: [
+            Container(
+              width: 110,
+              height: 110,
               decoration: BoxDecoration(
                 shape: BoxShape.circle,
-                gradient: RadialGradient(
-                  colors: [
-                    Colors.white.withOpacity(0.1),
-                    Colors.transparent,
-                  ],
-                  radius: 0.85,
-                  center: const Alignment(-0.5, -0.5),
+                boxShadow: [
+                  BoxShadow(
+                    color: Colors.black.withOpacity(0.2),
+                    offset: const Offset(0, 5),
+                    blurRadius: 10,
+                  ),
+                ],
+              ),
+            ),
+            SizedBox(
+              width: 100,
+              height: 100,
+              child: CircularProgressIndicator(
+                value: percentage,
+                strokeWidth: 12,
+                backgroundColor: Colors.grey[300],
+                valueColor: const AlwaysStoppedAnimation<Color>(
+                  Color.fromARGB(255, 31, 178, 224),
                 ),
               ),
             ),
-          ),
-          // Display nutrient name and value in the center
-          Text(
-  '${nutrientName.capitalize()}:\n${budget.toStringAsFixed(1)} $unit',
-  style: TextStyle( // Remove const here
-    fontSize: 14,
-    fontWeight: FontWeight.bold,
-    color: Colors.black,
-    shadows: [
-      const Shadow(
-        offset: Offset(2.0, 2.0),
-        blurRadius: 3.0,
-        color: Colors.grey,
-      ),
-      Shadow(
-        offset: const Offset(-2.0, -2.0),
-        blurRadius: 3.0,
-        color: Colors.white.withOpacity(0.6), 
-      ),
-    ],
-  ),
-  textAlign: TextAlign.center,
-)
-
-        ],
-      ),
-    ],
-  );
-}
-
+            Positioned.fill(
+              child: Container(
+                decoration: BoxDecoration(
+                  shape: BoxShape.circle,
+                  gradient: RadialGradient(
+                    colors: [
+                      Colors.white.withOpacity(0.1),
+                      Colors.transparent,
+                    ],
+                    radius: 0.85,
+                    center: const Alignment(-0.5, -0.5),
+                  ),
+                ),
+              ),
+            ),
+            Text(
+              '${nutrientName.capitalize()}:\n${budget.toStringAsFixed(1)} $unit',
+              style: TextStyle(
+                fontSize: 14,
+                fontWeight: FontWeight.bold,
+                color: Colors.black,
+                shadows: [
+                  const Shadow(
+                    offset: Offset(2.0, 2.0),
+                    blurRadius: 3.0,
+                    color: Colors.grey,
+                  ),
+                  Shadow(
+                    offset: const Offset(-2.0, -2.0),
+                    blurRadius: 3.0,
+                    color: Colors.white.withOpacity(0.6),
+                  ),
+                ],
+              ),
+              textAlign: TextAlign.center,
+            )
+          ],
+        ),
+      ],
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -497,77 +497,76 @@ class HomePageState extends State<HomePage> {
               ),
               const SizedBox(height: 30),
               // Display selected foods
-if (_selectedFoods.isNotEmpty)
-  Card(
-    color: Colors.white, // Set the background color of the card to white
-    elevation: 5,
-    shape: RoundedRectangleBorder(
-      borderRadius: BorderRadius.circular(12),
-    ),
-    child: Padding(
-      padding: const EdgeInsets.all(16.0),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          const Text(
-            'Makanan Terpilih:',
-            style: TextStyle(
-              fontSize: 20,
-              fontWeight: FontWeight.bold,
-            ),
-          ),
-          const SizedBox(height: 10),
-          for (var food in _selectedFoods)
-            Padding(
-              padding: const EdgeInsets.symmetric(vertical: 4.0),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    '${food['name'].toString().capitalize()}',
-                    style: const TextStyle(
-                      fontSize: 16, 
-                      fontWeight: FontWeight.bold,
+              if (_selectedFoods.isNotEmpty)
+                Card(
+                  color: Colors.white,
+                  elevation: 5,
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(12),
+                  ),
+                  child: Padding(
+                    padding: const EdgeInsets.all(16.0),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        const Text(
+                          'Makanan Terpilih:',
+                          style: TextStyle(
+                            fontSize: 20,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                        const SizedBox(height: 10),
+                        for (var food in _selectedFoods)
+                          Padding(
+                            padding: const EdgeInsets.symmetric(vertical: 4.0),
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(
+                                  '${food['name'].toString().capitalize()}',
+                                  style: const TextStyle(
+                                    fontSize: 16,
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                ),
+                                Text(
+                                  'Kalori: ${food['nutrients']['calories']} kcal',
+                                  style: const TextStyle(fontSize: 16),
+                                ),
+                                Text(
+                                  'Protein: ${food['nutrients']['protein']} g',
+                                  style: const TextStyle(fontSize: 16),
+                                ),
+                                Text(
+                                  'Lemak: ${food['nutrients']['fat']} g',
+                                  style: const TextStyle(fontSize: 16),
+                                ),
+                              ],
+                            ),
+                          ),
+                        const SizedBox(height: 20),
+                        Center(
+                          child: ElevatedButton(
+                            onPressed: _updateCalorieBudget,
+                            style: ElevatedButton.styleFrom(
+                              backgroundColor: Colors.blue[700],
+                              foregroundColor: Colors.white,
+                              padding: const EdgeInsets.symmetric(
+                                horizontal: 24,
+                                vertical: 12,
+                              ),
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(12),
+                              ),
+                            ),
+                            child: const Text('Perbarui Anggaran Nutrisi'),
+                          ),
+                        ),
+                      ],
                     ),
                   ),
-                  Text(
-                    'Kalori: ${food['nutrients']['calories']} kcal',
-                    style: const TextStyle(fontSize: 16),
-                  ),
-                  Text(
-                    'Protein: ${food['nutrients']['protein']} g',
-                    style: const TextStyle(fontSize: 16),
-                  ),
-                  Text(
-                    'Lemak: ${food['nutrients']['fat']} g',
-                    style: const TextStyle(fontSize: 16),
-                  ),
-                ],
-              ),
-            ),
-          const SizedBox(height: 20),
-          Center(
-            child: ElevatedButton(
-              onPressed: _updateCalorieBudget,
-              style: ElevatedButton.styleFrom(
-                backgroundColor: Colors.blue[700],
-                foregroundColor: Colors.white,
-                padding: const EdgeInsets.symmetric(
-                  horizontal: 24,
-                  vertical: 12,
                 ),
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(12),
-                ),
-              ),
-              child: const Text('Perbarui Anggaran Nutrisi'),
-            ),
-          ),
-        ],
-      ),
-    ),
-  ),
-
               const SizedBox(height: 30),
               const Text(
                 'Batas Asupan Nutrisi Harian',
@@ -580,10 +579,10 @@ if (_selectedFoods.isNotEmpty)
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: [
-                  buildNutrientCircle('kalori', _calorieBudget,
-                      _initialCalorieBudget, 'kcal'),
                   buildNutrientCircle(
-                      'protein', _proteinBudget, _initialProteinBudget, 'g'),
+                      'kalori', _calorieBudget, _initialCalorieBudget, 'kcal'),
+                  buildNutrientCircle('protein', _proteinBudget,
+                      _initialProteinBudget, 'g'),
                   buildNutrientCircle(
                       'lemak', _fatBudget, _initialFatBudget, 'g'),
                 ],
@@ -603,4 +602,3 @@ extension StringCapitalization on String {
     return this[0].toUpperCase() + substring(1);
   }
 }
-
