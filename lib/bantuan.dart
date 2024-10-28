@@ -37,6 +37,7 @@ class BantuanPageState extends State<BantuanPage> {
     'what should i do if i miss my appointment?': 'If you miss an appointment, please contact support or your nutritionist directly to reschedule or inquire about any possible fees.',
     'how can i view my payment history?': 'To view your payment history, go to the "Account" section and select "Payment History" to see a summary of all your past transactions.',
     'is my payment information secure?': 'Yes, we use secure encryption and follow industry standards to protect your payment information.',
+    'hello': 'Hello!, How can I help?',
   };
 
   void _sendMessage(String query) {
