@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_application_1/bantuan.dart';
 import 'konsultasi.dart'; 
 
 void main() {
@@ -33,9 +34,9 @@ class _MainScreenState extends State<MainScreen> {
   int _selectedIndex = 0;
 
   static const List<Widget> _widgetOptions = <Widget>[
-    HomePage(), // Main home page
-    KonsultasiDokterPage(), // Doctor consultation page
-    Center(child: Text('Pusat Bantuan')), // Help page placeholder
+    HomePage(), 
+    KonsultasiDokterPage(), 
+    BantuanPage(), 
   ];
 
   void _onItemTapped(int index) {
@@ -301,7 +302,7 @@ class HomePageState extends State<HomePage> {
         _proteinBudget -= nutrients['protein'];
         _fatBudget -= nutrients['fat'];
       }
-      _selectedFoods.clear(); // Clear selected foods after updating
+      _selectedFoods.clear(); 
     });
   }
 
@@ -314,7 +315,7 @@ class HomePageState extends State<HomePage> {
       Stack(
         alignment: Alignment.center,
         children: [
-          // Shadow for the 3D effect
+          
           Container(
             width: 110,
             height: 110,
@@ -329,7 +330,7 @@ class HomePageState extends State<HomePage> {
               ],
             ),
           ),
-          // 3D Effect using gradient for CircularProgressIndicator
+          
           SizedBox(
             width: 100,
             height: 100,
@@ -338,11 +339,11 @@ class HomePageState extends State<HomePage> {
               strokeWidth: 12,
               backgroundColor: Colors.grey[300],
               valueColor: const AlwaysStoppedAnimation<Color>(
-                Color.fromARGB(255, 31, 178, 224), // Modern blue
+                Color.fromARGB(255, 31, 178, 224), 
               ),
             ),
           ),
-          // Overlay gradient for 3D glossy effect
+          
           Positioned.fill(
             child: Container(
               decoration: BoxDecoration(
