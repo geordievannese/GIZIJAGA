@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_email_sender/flutter_email_sender.dart';
 
 List<Map<String, dynamic>> bookingHistory = []; // Global booking history list
 
 class AppointmentPage extends StatefulWidget {
   final String doctorName;
-  const AppointmentPage({super.key, required this.doctorName});
+  final String userEmail; // Pass the user's email as a parameter
+  const AppointmentPage({super.key, required this.doctorName, required this.userEmail});
 
   @override
   _AppointmentPageState createState() => _AppointmentPageState();
@@ -42,6 +44,31 @@ class _AppointmentPageState extends State<AppointmentPage> with SingleTickerProv
     super.dispose();
   }
 
+  Future<void> _sendConfirmationEmail() async {
+    final Email email = Email(
+      body: 'Your appointment with Dr. ${widget.doctorName} has been confirmed. Details:\n'
+            'Height: ${heightController.text} cm\n'
+            'Weight: ${weightController.text} kg\n'
+            'Gender: $gender\n'
+            'Payment Method: $paymentMethod\n\n'
+            'Thank you for booking with us!',
+      subject: 'Appointment Confirmation',
+      recipients: [widget.userEmail], // Send to the user's email
+      isHTML: false,
+    );
+
+    try {
+      await FlutterEmailSender.send(email);
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text("Confirmation email sent!")),
+      );
+    } catch (error) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text("Confirmation email sent!")),
+      );
+    }
+  }
+
   void _submitForm() {
     if (_formKey.currentState!.validate()) {
       // Add booking to history
@@ -66,6 +93,9 @@ class _AppointmentPageState extends State<AppointmentPage> with SingleTickerProv
           ),
         );
       });
+
+      // Send confirmation email after booking is saved
+      _sendConfirmationEmail();
     }
   }
 

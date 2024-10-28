@@ -245,7 +245,7 @@ class KonsultasiDokterPageState extends State<KonsultasiDokterPage> {
                             Navigator.push(
                               context,
                               MaterialPageRoute(
-                                builder: (context) => AppointmentPage(doctorName: doctor['name']!),
+                                builder: (context) => AppointmentPage(doctorName: doctor['name']!, userEmail: '',),
                               ),
                             );
                           },
